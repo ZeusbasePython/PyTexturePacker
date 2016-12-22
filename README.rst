@@ -123,6 +123,12 @@ reduce_border_artifacts
 Adds color to transparent pixels by repeating a sprite's outer color values.
 These color values can reduce artifacts around sprites and removes dark halos at transparent borders. This feature is also known as "Alpha bleeding".
 
+detect_identical_sprites
+-----------------------
+
+If two or more sprites are identical just create alias for same sprite sheet region.
+
+
 
 Contribute
 ==========
