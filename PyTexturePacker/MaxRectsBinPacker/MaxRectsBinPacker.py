@@ -99,6 +99,26 @@ class MaxRectsBinPacker(PackerInterface):
             for image_rect in image_rects:
                 image_rect.trim(self.trim_mode)
 
+        print "Images to pack", len(image_rects)
+                
+        duplicates = {}
+        if self.detect_identical_sprites:
+            new_image_rects = []
+            for image_rect in image_rects:
+                found = False
+                for item in new_image_rects:
+                    if item.hash == image_rect.hash:
+                        found = True
+                        if item.hash in duplicates:
+                            duplicates[item.hash].append(image_rect)
+                        else:
+                            duplicates[item.hash] = [image_rect]
+                if not found:
+                    new_image_rects.append(image_rect)
+            image_rects = new_image_rects
+            print "Original count", len(image_rects)
+        
+
         max_rect_list = self._pack(image_rects)
 
         output_plist_list = []
@@ -106,7 +126,7 @@ class MaxRectsBinPacker(PackerInterface):
 
         for i, max_rect in enumerate(max_rect_list):
             packed_image = max_rect.dump_image(self.bg_color)
-            packed_plist = max_rect.dump_plist()
+            packed_plist = max_rect.dump_plist(duplicates)
 
             output_image_list.append(packed_image)
             output_plist_list.append(packed_plist)

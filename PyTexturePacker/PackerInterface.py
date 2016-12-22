@@ -24,7 +24,7 @@ class PackerInterface(object):
     """
 
     def __init__(self, bg_color=0x00000000, texture_format=".png", max_width=4096, max_height=4096, enable_rotated=True,
-                 force_square=False, border_padding=2, shape_padding=2, inner_padding=0, trim_mode=0, reduce_border_artifacts=False):
+                 force_square=False, border_padding=2, shape_padding=2, inner_padding=0, trim_mode=0, reduce_border_artifacts=False, detect_identical_sprites=False):
         """
         :param bg_color:
         :param texture_format:
@@ -50,6 +50,7 @@ class PackerInterface(object):
         self.inner_padding = inner_padding
         self.trim_mode = trim_mode
         self.reduce_border_artifacts = reduce_border_artifacts
+        self.detect_identical_sprites = detect_identical_sprites
 
     def pack(self, input_images, output_name, output_path=""):
         raise NotImplementedError

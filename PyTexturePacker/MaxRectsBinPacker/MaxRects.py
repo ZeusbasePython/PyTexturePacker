@@ -218,7 +218,7 @@ class MaxRects(object):
 
         return True
 
-    def dump_plist(self):
+    def dump_plist(self, duplicates = None):
         import os
 
         plist_data = {}
@@ -232,22 +232,30 @@ class MaxRects(object):
             if image_rect.trimmed:
                 center_offset = (image_rect.source_box[0] + width / 2. - image_rect.source_size[0] / 2.,
                                  - (image_rect.source_box[1] + height / 2. - image_rect.source_size[1] / 2.))
-                
-            path = None
-                             
-            if image_rect.short_path:
-                path = image_rect.short_path.replace("\\", "/")
-            else:
-                _, path = os.path.split(image_rect.path)
 
-            frames[path] = dict(
-                frame="{{%d,%d},{%d,%d}}" % (image_rect.x, image_rect.y, width, height),
-                offset="{%d,%d}" % center_offset,
-                rotated=bool(image_rect.rotated),
-                sourceColorRect="{{%d,%d},{%d,%d}}" % (
-                    image_rect.source_box[0], image_rect.source_box[1], width, height),
-                sourceSize="{%d,%d}" % image_rect.source_size,
-            )
+            paths = []
+
+            if image_rect.short_path:
+                paths.append(image_rect.short_path.replace("\\", "/"))
+            else:
+                paths.append(os.path.split(image_rect.path)[1])
+                
+            if duplicates and image_rect.hash in duplicates:
+                for duplicate in duplicates[image_rect.hash]:
+                    if duplicate.short_path:
+                        paths.append(duplicate.short_path.replace("\\", "/"))
+                    else:
+                        paths.append(os.path.split(duplicate.path)[1])
+            
+            for path in paths:
+                frames[path] = dict(
+                    frame="{{%d,%d},{%d,%d}}" % (image_rect.x, image_rect.y, width, height),
+                    offset="{%d,%d}" % center_offset,
+                    rotated=bool(image_rect.rotated),
+                    sourceColorRect="{{%d,%d},{%d,%d}}" % (
+                        image_rect.source_box[0], image_rect.source_box[1], width, height),
+                    sourceSize="{%d,%d}" % image_rect.source_size,
+                )
 
         plist_data["frames"] = frames
         plist_data["metadata"] = dict(
