@@ -19,11 +19,12 @@ class ImageRect(Rect):
     Image Rect data
     """
 
-    def __init__(self, image_path=None):
+    def __init__(self, image_path=None, base_path=None):
         super(ImageRect, self).__init__(0, 0, 0, 0)
 
         self.image = None
         self.image_path = None
+        self.short_path = None
         self.source_size = (0, 0)
         self.source_box = (0, 0, 0, 0)
 
@@ -32,6 +33,8 @@ class ImageRect(Rect):
         if image_path:
             self.load_image(image_path)
             self.image_path = image_path
+        if base_path:
+            self.short_path = image_path.replace(base_path, "")
 
     @property
     def rotated(self):

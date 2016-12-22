@@ -232,9 +232,13 @@ class MaxRects(object):
             if image_rect.trimmed:
                 center_offset = (image_rect.source_box[0] + width / 2. - image_rect.source_size[0] / 2.,
                                  - (image_rect.source_box[1] + height / 2. - image_rect.source_size[1] / 2.))
-
-            path = image_rect.image_path
-            _, path = os.path.split(path)
+                
+            path = None
+                             
+            if image_rect.short_path:
+                path = image_rect.short_path.replace("\\", "/")
+            else:
+                _, path = os.path.split(image_rect.path)
 
             frames[path] = dict(
                 frame="{{%d,%d},{%d,%d}}" % (image_rect.x, image_rect.y, width, height),
