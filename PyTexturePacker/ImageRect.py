@@ -25,7 +25,6 @@ class ImageRect(Rect):
         self.image = None
         self.image_path = None
         self.short_path = None
-        self.hash = None
         self.source_size = (0, 0)
         self.source_box = (0, 0, 0, 0)
 
@@ -53,11 +52,9 @@ class ImageRect(Rect):
             return tuple(0, 0, self.width, self.height)
 
     def load_image(self, image_path):
-        import hashlib
         img = Image.open(image_path)
         self.image = img.copy()
         img.close()
-        self.hash = hashlib.sha256(self.image.tobytes()).hexdigest()
         self.image_path = image_path
 
         self.x, self.y = 0, 0

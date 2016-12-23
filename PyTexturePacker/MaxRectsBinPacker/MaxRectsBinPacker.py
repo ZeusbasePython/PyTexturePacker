@@ -104,21 +104,26 @@ class MaxRectsBinPacker(PackerInterface):
         duplicates = {}
         if self.detect_identical_sprites:
             new_image_rects = []
+            import hashlib
+            
             for image_rect in image_rects:
                 found = False
+                data = image_rect.image.tobytes()
+                hash = hashlib.md5(data).hexdigest()
                 for item in new_image_rects:
-                    if item.hash == image_rect.hash:
+                    if item[2] == hash and data == item[1]:
                         found = True
-                        if item.hash in duplicates:
-                            duplicates[item.hash].append(image_rect)
+                        if item[0].image_path in duplicates:
+                            duplicates[item[0].image_path].append(image_rect)
                         else:
-                            duplicates[item.hash] = [image_rect]
+                            duplicates[item[0].image_path] = [image_rect]
                 if not found:
-                    new_image_rects.append(image_rect)
-            image_rects = new_image_rects
-            print "Original count", len(image_rects)
+                    new_image_rects.append((image_rect, data, hash))
+            image_rects = []
+            for image_rect in new_image_rects:
+                image_rects.append(image_rect[0])
+            print "Original count", len(image_rects)   
         
-
         max_rect_list = self._pack(image_rects)
 
         output_plist_list = []

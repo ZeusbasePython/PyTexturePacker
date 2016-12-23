@@ -240,8 +240,8 @@ class MaxRects(object):
             else:
                 paths.append(os.path.split(image_rect.path)[1])
                 
-            if duplicates and image_rect.hash in duplicates:
-                for duplicate in duplicates[image_rect.hash]:
+            if duplicates and image_rect.image_path in duplicates:
+                for duplicate in duplicates[image_rect.image_path]:
                     if duplicate.short_path:
                         paths.append(duplicate.short_path.replace("\\", "/"))
                     else:
