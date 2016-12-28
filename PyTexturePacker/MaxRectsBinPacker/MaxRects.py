@@ -218,7 +218,7 @@ class MaxRects(object):
 
         return True
 
-    def dump_plist(self, duplicates = None):
+    def dump_plist(self, duplicates = None, prefix = ""):
         import os
 
         plist_data = {}
@@ -248,7 +248,7 @@ class MaxRects(object):
                         paths.append(os.path.split(duplicate.path)[1])
             
             for path in paths:
-                frames[path] = dict(
+                frames[prefix + path] = dict(
                     frame="{{%d,%d},{%d,%d}}" % (image_rect.x, image_rect.y, width, height),
                     offset="{%d,%d}" % center_offset,
                     rotated=bool(image_rect.rotated),
