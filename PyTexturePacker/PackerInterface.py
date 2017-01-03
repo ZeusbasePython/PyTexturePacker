@@ -52,7 +52,7 @@ class PackerInterface(object):
         self.reduce_border_artifacts = reduce_border_artifacts
         self.detect_identical_sprites = detect_identical_sprites
 
-    def pack(self, input_images, output_name, output_path="", path_prefix=""):
+    def pack(self, input_images, output_name, output_path="", path_prefix="", sprites_scale = 1.0):
         raise NotImplementedError
 
     def multi_pack(self, pack_args_list):

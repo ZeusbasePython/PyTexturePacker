@@ -19,7 +19,7 @@ class ImageRect(Rect):
     Image Rect data
     """
 
-    def __init__(self, image_path=None, base_path=None):
+    def __init__(self, image_path=None, base_path=None, image_scale=1.0):
         super(ImageRect, self).__init__(0, 0, 0, 0)
 
         self.image = None
@@ -31,7 +31,7 @@ class ImageRect(Rect):
         self._rotated = False
         self._trimmed = False
         if image_path:
-            self.load_image(image_path)
+            self.load_image(image_path, image_scale)
             self.image_path = image_path
         if base_path:
             self.short_path = image_path.replace(base_path, "")
@@ -51,9 +51,12 @@ class ImageRect(Rect):
         else:
             return tuple(0, 0, self.width, self.height)
 
-    def load_image(self, image_path):
+    def load_image(self, image_path, image_scale):
         img = Image.open(image_path)
-        self.image = img.copy()
+        if image_scale == 1.0:
+            self.image = img.copy()
+        else:
+            self.image = img.resize((int(img.size[0] * image_scale), int(img.size[1] * image_scale)) , Image.LANCZOS)
         img.close()
         self.image_path = image_path
 

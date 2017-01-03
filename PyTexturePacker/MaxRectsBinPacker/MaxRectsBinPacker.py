@@ -81,7 +81,7 @@ class MaxRectsBinPacker(PackerInterface):
         """
         super(MaxRectsBinPacker, self).__init__(*args, **kwargs)
 
-    def pack(self, input_images, output_name, output_path="", path_prefix=""):
+    def pack(self, input_images, output_name, output_path="", path_prefix="", sprites_scale = 1.0):
         """
 
         :param input_images:
@@ -91,9 +91,9 @@ class MaxRectsBinPacker(PackerInterface):
         """
 
         if isinstance(input_images, (tuple, list)):
-            image_rects = Utils.load_images_from_paths(input_images)
+            image_rects = Utils.load_images_from_paths(input_images, sprites_scale)
         else:
-            image_rects = Utils.load_images_from_dir(input_images)
+            image_rects = Utils.load_images_from_dir(input_images, sprites_scale)
 
         if self.trim_mode:
             for image_rect in image_rects:

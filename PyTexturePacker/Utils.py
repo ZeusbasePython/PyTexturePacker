@@ -12,7 +12,7 @@ Description:
 SUPPORTED_IMAGE_FORMAT = [".png", ".jpg", ".bmp"]
 
 
-def load_images_from_paths(image_path_list, base_path=None):
+def load_images_from_paths(image_path_list, base_path=None, sprites_scale=1.0):
     """
     load image form paths
     :param image_path_list: image paths list
@@ -22,13 +22,13 @@ def load_images_from_paths(image_path_list, base_path=None):
 
     image_rect_list = []
     for file_path in image_path_list:
-        image_rect = ImageRect(file_path, base_path)
+        image_rect = ImageRect(file_path, base_path, sprites_scale)
         image_rect_list.append(image_rect)
 
     return image_rect_list
 
 
-def load_images_from_dir(dir_path):
+def load_images_from_dir(dir_path, sprites_scale=1.0):
     """
     load all images from a directory
     :param dir_path: directory path
@@ -44,7 +44,7 @@ def load_images_from_dir(dir_path):
             if ext.lower() in SUPPORTED_IMAGE_FORMAT:
                 image_rect_path.append(file_path)
 
-    return load_images_from_paths(image_rect_path, dir_path)
+    return load_images_from_paths(image_rect_path, dir_path, sprites_scale)
 
 
 def save_plist(data_dict, file_path):
