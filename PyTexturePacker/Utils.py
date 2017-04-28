@@ -100,8 +100,7 @@ def alpha_bleeding(image, bleeding_pixel=8):
         for offset in offsets:
             ox = x + offset[0]
             oy = y + offset[1]
-            if ox >= 0 and ox < width and oy >= 0 and oy < height \
-                    and pa[ox, oy][3] == 0:
+            if 0 <= ox < width and 0 <= oy < height and pa[ox, oy][3] == 0:
                 return True
         return False
 
@@ -111,9 +110,8 @@ def alpha_bleeding(image, bleeding_pixel=8):
         for offset in offsets:
             ox = x + offset[0]
             oy = y + offset[1]
-            if ox >= 0 and ox < width and oy >= 0 and oy < height \
-                    and pa[ox, oy][3] == 0 and (ox, oy) not in bleeding:
-                pa[ox, oy] = (pixel[0], pixel[1], pixel[2], 0)
+            if 0 <= ox < width and 0 <= oy < height and pa[ox, oy][3] == 0 and (ox, oy) not in bleeding:
+                pa[ox, oy] = (pixel[0], pixel[1], pixel[2], 1)
                 bleeding.add(pa)
                 if _tell_border(ox, oy):
                     borders.append((ox, oy))
@@ -170,4 +168,3 @@ def clean_pixel_alpha_below(image, v=1):
             if pixel[3] < v:
                 pa[x, y] = (0, 0, 0, 0)
     return image
-
